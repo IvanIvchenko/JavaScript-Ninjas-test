@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BookFormatter from "../components/bookFormatter.js";
 import { getBookData } from "../redux/actions/booksActions.js";
 
-function BookDetailsPage() {
+function BookDetails() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const bookLoading = useSelector(state => state.books.loadingBook)
@@ -56,4 +56,4 @@ function BookDetailsPage() {
 
 }
 
-export default BookDetailsPage
+export default BookDetails
