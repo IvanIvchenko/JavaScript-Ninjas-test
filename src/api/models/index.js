@@ -19,8 +19,5 @@ db.sequelize = sequelize;
 db.book = require("./bookModel.js")(sequelize, Sequelize);
 db.bookData = require("./bookDataModel.js")(sequelize, Sequelize);
 db.book.hasOne(db.bookData, { as: "bookData" });
-db.bookData.belongsTo(db.book, {
-    foreignKey: "bookId",
-    as: "book"
-})
+
 module.exports = db;
