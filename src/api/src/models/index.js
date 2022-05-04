@@ -1,4 +1,4 @@
-const dbConfig = require("../config/dbConfig.js");
+const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -16,8 +16,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.book = require("./bookModel.js")(sequelize, Sequelize);
-db.bookData = require("./bookDataModel.js")(sequelize, Sequelize);
+db.book = require("./book.model.js")(sequelize, Sequelize);
+db.bookData = require("./bookData.model.js")(sequelize, Sequelize);
 db.book.hasOne(db.bookData, { as: "bookData" });
 
 module.exports = db;

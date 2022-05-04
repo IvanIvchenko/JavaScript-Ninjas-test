@@ -1,5 +1,5 @@
 const multer = require("multer")
-const newBookExistsCheck = require("../bin/newBookExistsCheck.js")
+const bookExistsCheck = require("../utils/bookExistsCheck.util.js")
 
 // defining image storage location
 const storageConfig = multer.diskStorage({
@@ -11,20 +11,26 @@ const storageConfig = multer.diskStorage({
     }
 });
 // defining imagesave filters for book creation
-const fileFilterCreate = (req, file, cb) => {
-    newBookExistsCheck(req.body.title)
-        .then(check => {
-            if (!check
-                && file.mimetype === "image/png"
-                || file.mimetype === "image/jpg"
-                || file.mimetype === "image/jpeg"
-            ) {
-                cb(null, true);
-            }
-            else {
-                cb(null, false);
-            }
-        })
+const fileFilterCreate = async (req, file, cb) => {
+    if (!req.body.title
+        || !req.body.description
+        || !req.body.author
+        || !req.body.year_written
+        || !file
+    ) {
+        cb(null, false);
+    } else {
+        const bookExists = await bookExistsCheck(req.body.title)
+        if (!bookExists
+            && file.mimetype === "image/png"
+            || file.mimetype === "image/jpg"
+            || file.mimetype === "image/jpeg"
+        ) {
+            cb(null, true);
+        } else {
+            cb(null, false);
+        }
+    }
 }
 // defining imagesave filters for book edit
 const fileFilterEdit = (req, file, cb) => {
@@ -33,8 +39,7 @@ const fileFilterEdit = (req, file, cb) => {
         || file.mimetype === "image/jpeg"
     ) {
         cb(null, true);
-    }
-    else {
+    } else {
         cb(null, false);
     }
 }

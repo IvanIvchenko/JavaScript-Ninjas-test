@@ -1,12 +1,11 @@
 import { Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material';
 
-function BooksCard(props) {
-    const book = props.book
+function BookCard({book, onClick}) {
     const handleClick = () =>{
-        return props.onClick(book.id) 
+        return onClick(book.id) 
     }
     return (
-        <Card sx={{ width: 500, m: 2 }} >
+        <Card sx={{ width: 500, m: 2 }} key={book.title}>
             <CardActionArea id={book.id} onClick={handleClick}>
                 <CardMedia
                     component="img"
@@ -27,4 +26,4 @@ function BooksCard(props) {
     )
 }
 
-export default BooksCard
+export default BookCard

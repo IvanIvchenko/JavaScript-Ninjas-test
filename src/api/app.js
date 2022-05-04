@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import booksRoute from './routes/booksRoute.js'
+import booksRoute from './src/routes/books.route.js'
 
 const app = express();
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
@@ -11,10 +11,10 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 //     res.setHeader('Access-Control-Allow-Credentials', true)
 //     next()
 // });
-const db = require("./models");
+const db = require("./src/models");
 
-// db.sequelize.sync();
-db.sequelize.sync({ force: true })
+db.sequelize.sync();
+//db.sequelize.sync({ force: true })
 
 app.use("/public", express.static(__dirname + "/static/images"));
 

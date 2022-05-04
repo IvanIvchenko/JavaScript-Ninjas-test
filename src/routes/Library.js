@@ -1,23 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { Grid, CircularProgress, Box, AppBar, Toolbar, IconButton, Typography, Button} from '@material-ui/core';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import BooksCard from "../components/booksCard.js";
-import { getBookData, getBooksData } from "../redux/actions/booksActions.js";
+import { Grid, CircularProgress, Box, IconButton } from '@material-ui/core';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AppHeader from "../components/AppHeader.js"
+import BookCard from "../components/BookCard.js";
+import AddBook from "../components/AddBook.js";
+import { getBooksData, createBookData } from "../redux/actions/booksActions.js";
 
 function Library() {
+    const [addBookActive, setAddBookActive] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const booksLoading = useSelector(state => state.books.loadingBooks)
-    const books = useSelector(state => state.books.books)
+    const fetchingBooks = useSelector(state => state.library.fetchingBooks)
+    const creatingBook = useSelector(state => state.library.creatingBook)
+    const books = useSelector(state => state.library.books)
 
     useEffect(() => {
-        dispatch(getBooksData())
-    }, [])
+        if(!creatingBook){
+            dispatch(getBooksData())
+        }
+    }, [creatingBook])
 
-    const handleBookClick = event => {
-        navigate(`../book/${event}`, { replace: true })
+    const handleBookCreation = event => {
+        dispatch(createBookData(event))
+        setAddBookActive(!addBookActive)
+    }
+
+    const handleBookClick = id => {
+        navigate(`../book/${id}`)
     }
 
     return (
@@ -32,24 +43,24 @@ function Library() {
             direction="column"
             alignItems="center"
         >
-            <AppBar position="static" >
-                <Toolbar>
-                    <Button 
-                    onClick={() => navigate('/') }
-                    style={{textTransform: 'none'}}
-                    color="inherit">
-                        <Typography
-                            variant="h4"
-                        >
-                            Library
-                        </Typography>
-                    </Button>
-                </Toolbar>
-            </AppBar>
-            <Box >
-                {booksLoading ?
+            <AppHeader />
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                sx={{ mt: 9 }}
+            >
+                <IconButton onClick={(() => setAddBookActive(!addBookActive))}>
+                    <AddCircleOutlineIcon style={{ fontSize: "50" }} />
+                </IconButton>
+                {addBookActive ?
+                    <AddBook onFormSubmit={handleBookCreation} />
+                    : null
+                }
+                {fetchingBooks ?
                     <CircularProgress />
-                    : books.map(book => <BooksCard style={{ margin: '30px' }} book={book} onClick={handleBookClick} />)}
+                    : books.map(book => <BookCard style={{ margin: '30px' }} book={book} onClick={handleBookClick} />)
+                }
             </Box>
         </Grid>
     )

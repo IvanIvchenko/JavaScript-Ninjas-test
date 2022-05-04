@@ -1,21 +1,32 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from 'react-router-dom';
-import { Grid, CircularProgress, Box, AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import BookFormatter from "../components/bookFormatter.js";
-import { getBookData } from "../redux/actions/booksActions.js";
+import { useParams, useNavigate } from 'react-router-dom';
+import { Grid, Box, CircularProgress } from '@material-ui/core';
+import AppHeader from "../components/AppHeader.js"
+import BookFormatter from "../components/BookFormatter.js";
+import { getBookData, deleteBookData } from "../redux/actions/booksActions.js";
 
 function BookDetails() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const bookLoading = useSelector(state => state.books.loadingBook)
-    const book = useSelector(state => state.books.book)
+    const fetchingBook = useSelector(state => state.library.fetchingBook)
+    const deletingBook = useSelector(state => state.library.deletingBook)
+    const book = useSelector(state => state.library.book)
     const { id } = useParams()
 
     useEffect(() => {
         dispatch(getBookData(id))
     }, [id])
+
+    useEffect(() => {
+        if(deletingBook){
+            navigate('/library')
+        }
+    }, [deletingBook])
+
+    const handleBookDelete = id => {
+        dispatch(deleteBookData(id))
+    }
 
     return (
         <Grid
@@ -28,29 +39,12 @@ function BookDetails() {
             direction="column"
             alignItems="center"
         >
-            <AppBar position="static" >
-                <Toolbar >
-                    <IconButton
-                        onClick={() => navigate('/library')}
-                        color="inherit"
-                    >
-                        <ArrowBackIcon />
-                    </IconButton>
-                    <Button
-                        onClick={() => navigate('/')}
-                        style={{textTransform: 'none'}}
-                        color="inherit">
-                        <Typography
-                            variant="h4"
-                        >
-                            Library
-                        </Typography>
-                    </Button>
-                </Toolbar>
-            </AppBar>
-            {bookLoading ?
-                <CircularProgress />
-                : <BookFormatter book={book} />}
+            <AppHeader path='/library' />
+            <Box sx={{ mt: 9 }}>
+                {fetchingBook ?
+                    <CircularProgress />
+                    : <BookFormatter book={book} onDelete={handleBookDelete} />}
+            </Box>
         </Grid>
     )
 
