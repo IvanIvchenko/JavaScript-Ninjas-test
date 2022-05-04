@@ -37,7 +37,7 @@ function HomePage() {
                 Digital library
             </Typography>
             <Typography variant="h5" gutterBottom component="div">
-                "A place for every test reviewer"
+                "A place for every portfolio reviewer"
             </Typography>
             <Button
                 variant="contained"
