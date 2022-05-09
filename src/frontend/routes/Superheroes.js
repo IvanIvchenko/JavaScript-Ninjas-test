@@ -23,7 +23,6 @@ function Superheroes() {
 
     useEffect(() => {
         const page = setPage(searchParams.get('page'), pagesNumber)
-        setSearchParams({ page: page })
         dispatch(getSuperheroesData(page))
     }, [])
 
@@ -36,6 +35,7 @@ function Superheroes() {
     const handleSuperheroCreation = event => {
         setAddSuperheroActive(!addSuperheroActive)
         dispatch(createSuperheroData(event))
+        window.location.reload(false)
     }
 
     const handleSuperheroClick = id => {
