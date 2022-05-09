@@ -1,16 +1,13 @@
 import express from 'express'
 import cors from 'cors'
-import booksRoute from './src/routes/books.route.js'
+import superheroesRoute from './src/routes/superheroes.route.js'
 
 const app = express();
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
-// app.use(function (req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', '*')
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
-//     res.setHeader('Access-Control-Allow-Credentials', true)
-//     next()
-// });
+app.use(function (req, res, next) {
+    res.header('Access-Control-Expose-Headers', 'X-Total-Count')
+    next()
+})
 const db = require("./src/models");
 
 db.sequelize.sync();
@@ -18,6 +15,6 @@ db.sequelize.sync();
 
 app.use("/public", express.static(__dirname + "/static/images"));
 
-app.use("/books", booksRoute);
+app.use("/superheroes", superheroesRoute);
 
 app.listen(5000, () => console.log("Express server started at localhost:5000"));

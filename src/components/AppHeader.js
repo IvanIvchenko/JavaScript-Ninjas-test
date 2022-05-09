@@ -1,21 +1,11 @@
 import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
-function AppHeader({ path }) {
+function AppHeader() {
     const navigate = useNavigate();
     return (
         <AppBar position="fixed" >
             <Toolbar>
-                {path ?
-                    <IconButton
-                        onClick={() => navigate(path)}
-                        color="inherit"
-                    >
-                        <ArrowBackIcon />
-                    </IconButton>    
-                    : null
-                }
                 <Button
                     onClick={() => navigate('/')}
                     style={{ textTransform: 'none' }}
@@ -23,7 +13,7 @@ function AppHeader({ path }) {
                     <Typography
                         variant="h4"
                     >
-                        Library
+                        Superheroes
                     </Typography>
                 </Button>
             </Toolbar>

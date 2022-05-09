@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import { booksReducer } from "./booksReducer.js"
+import { superheroesReducer } from "./superheroesReducer.js"
 
 const reducers = combineReducers({
-  library: booksReducer
+  superheroes: superheroesReducer
 });
 
 export default reducers;

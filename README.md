@@ -1,41 +1,26 @@
-To run the application, install Node.js, create a database and enter credentials in the /src/api/config/dbConfig.js file, then enter the following commands into the terminal at parent directory:
+To run the application, install Node.js, create a postgress database and enter credentials in the /src/api/config/dbConfig.js file, then enter the following commands into the terminal at parent directory(/):
 
 # npm install
 # npm run packages
 # npm run dev
 
-DB structure:
+## DB structure:
 
-BEGIN;
-
-
-CREATE TABLE IF NOT EXISTS public."bookData"
+CREATE TABLE IF NOT EXISTS public.superheros
 (
-    id integer NOT NULL DEFAULT nextval('"bookData_id_seq"'::regclass),
-    author character varying(255) COLLATE pg_catalog."default",
-    year_written integer,
+    id integer NOT NULL DEFAULT nextval('superheros_id_seq'::regclass),
+    nickname character varying(255) COLLATE pg_catalog."default",
+    real_name character varying(255) COLLATE pg_catalog."default",
+    origin_description character varying(255) COLLATE pg_catalog."default",
+    superpowers character varying(255) COLLATE pg_catalog."default",
+    catch_phrase character varying(255) COLLATE pg_catalog."default",
+    "mainImage" character varying(255) COLLATE pg_catalog."default",
+    images character varying(255)[] COLLATE pg_catalog."default",
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
-    "bookDatumId" integer,
-    CONSTRAINT "bookData_pkey" PRIMARY KEY (id)
+    CONSTRAINT superheros_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS public.books
-(
-    id integer NOT NULL DEFAULT nextval('books_id_seq'::regclass),
-    title character varying(255) COLLATE pg_catalog."default",
-    description character varying(255) COLLATE pg_catalog."default",
-    image character varying(255) COLLATE pg_catalog."default",
-    "imagePath" character varying(255) COLLATE pg_catalog."default",
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
-    CONSTRAINT books_pkey PRIMARY KEY (id)
-);
+## Assumptions: 
 
-ALTER TABLE IF EXISTS public."bookData"
-    ADD CONSTRAINT "bookData_bookDatumId_fkey" FOREIGN KEY ("bookDatumId")
-    REFERENCES public.books (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-    ON DELETE SET NULL;
-
-END;
+From the text of the test task, I've assumed that there should only be one table in the database

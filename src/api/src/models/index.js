@@ -16,8 +16,5 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.book = require("./book.model.js")(sequelize, Sequelize);
-db.bookData = require("./bookData.model.js")(sequelize, Sequelize);
-db.book.hasOne(db.bookData, { as: "bookData" });
-
+db.superhero = require("./superhero.model.js")(sequelize, Sequelize);
 module.exports = db;
