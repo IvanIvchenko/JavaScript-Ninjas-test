@@ -56,10 +56,8 @@ function EditSuperhero({ superhero, onSubmit, onCancelClick }) {
     const handleSubmit = (e) => {
         e.preventDefault()
         const formDataObject = getFormDataFromObject(formValues)
-        console.log(formDataObject)
         return onSubmit(formDataObject)
     }
-    console.log(formValues.mainImage)
     return (
         <Box
             component="form"
